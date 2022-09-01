@@ -9,6 +9,7 @@
 
 ### Project backend will be built using Java Spring boot with JPA and Hibernate to connect to postgreSQL database for account and logging chat. Frontend will be built using React with typescript built through vite. Will use STOMPjs and Sockjs to handle websocket communication and help clients signal each other for their webRTC connection.
 
+### [ProjBoard](https://github.com/users/atn95/projects/3)
 ### [wireframe:](https://wireframe.cc/cM52p0)
 ### [ERD](https://lucid.app/lucidchart/8c04207e-43f2-4fd3-b853-128f027d2bde/edit?viewport_loc=-151%2C-344%2C2160%2C1123%2C0_0&invitationId=inv_ba7e3020-75e5-407d-8674-c08348099da4#)
 ### [CHD](https://lucid.app/lucidchart/8c04207e-43f2-4fd3-b853-128f027d2bde/edit?viewport_loc=-11%2C-11%2C2160%2C1123%2CUT9Mb5TXjfpN&invitationId=inv_ba7e3020-75e5-407d-8674-c08348099da4#)

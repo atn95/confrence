@@ -1,26 +1,21 @@
-package main.Server.controller;
+package main.Server.account;
 
+import main.Server.constants.ServerConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
-@RequestMapping(value = "/api")
-public class ServerController {
+@RequestMapping(value = ServerConstants.API_ROUTE + "/api")
+public class AccountController {
 
     @Autowired
-    public ServerController() {
+    public AccountController() {
     }
-    @GetMapping(value = "/hello")
+    @GetMapping
     public String test() {
         return "Server is running";
     }
 
-    @GetMapping(value = "/list")
-    public int[] getList() {
-        return new int[]{1,2,3,4,6,7};
-    }
 }
