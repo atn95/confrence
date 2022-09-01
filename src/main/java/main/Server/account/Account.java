@@ -1,8 +1,12 @@
 package main.Server.account;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table
@@ -21,7 +25,14 @@ public class Account {
     private String displayName;
     private String firstName;
     private String lastName;
+    @Column(columnDefinition = "smallint default 0")
     private Short status;
+    @Column(updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     public Account(Long id, String email, String password, String displayName, String firstName, String lastName, Short status) {
         this.id = id;
@@ -99,6 +110,14 @@ public class Account {
 
     public void setStatus(Short status) {
         this.status = status;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
