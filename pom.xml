@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>main</groupId>
-	<artifactId>Server</artifactId>
+	<artifactId>server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Conference Backend</name>
 	<description>Backend Server for WebRTC</description>

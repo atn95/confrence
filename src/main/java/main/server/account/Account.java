@@ -25,7 +25,7 @@ public class Account {
     private String firstName;
     private String lastName;
     @Column(columnDefinition = "smallint default 0")
-    private Short status;
+    private Short status = 0;
     @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -33,23 +33,20 @@ public class Account {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public Account(Long id, String email, String password, String displayName, String firstName, String lastName, Short status) {
-        this.id = id;
+    public Account(Long id, String email, String password, String displayName, String firstName, String lastName){
         this.email = email;
         this.password = password;
         this.displayName = displayName;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.status = status;
     }
 
-    public Account(String email, String password, String displayName, String firstName, String lastName, Short status) {
+    public Account(String email, String password, String displayName, String firstName, String lastName) {
         this.email = email;
         this.password = password;
         this.displayName = displayName;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.status = status;
     }
 
     public Account() {
