@@ -1,9 +1,8 @@
-package main.Server.account;
+package main.server.account;
 
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

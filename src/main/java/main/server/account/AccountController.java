@@ -1,6 +1,6 @@
-package main.Server.account;
+package main.server.account;
 
-import main.Server.constants.ServerConstants;
+import main.server.constants.ServerConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
