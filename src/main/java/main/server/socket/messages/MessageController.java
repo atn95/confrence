@@ -11,6 +11,7 @@ public class MessageController {
     @MessageMapping("/message")//client sent to 'ws/messages'
     @SendTo("/topic/messages")//client listening to this topic
     public ResponseMessage getMessage(final ChatMessage message) {
+        System.out.println("Message \n \n " + message.getMessageContent() +" \n \n *******");
         return new ResponseMessage(HtmlUtils.htmlEscape(message.getMessageContent()));
     }
 }
