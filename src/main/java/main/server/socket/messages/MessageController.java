@@ -10,7 +10,7 @@ import org.springframework.web.util.HtmlUtils;
 
 @Controller
 public class MessageController {
-    private SimpMessagingTemplate template;
+    private final SimpMessagingTemplate template;
 
     @Autowired
     public MessageController(SimpMessagingTemplate template) {

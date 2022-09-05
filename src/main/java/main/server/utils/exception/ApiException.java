@@ -1,4 +1,4 @@
-package main.server.utils;
+package main.server.utils.exception;
 
 public class ApiException extends RuntimeException{
     private final int status;

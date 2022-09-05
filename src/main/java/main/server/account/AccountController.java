@@ -1,7 +1,7 @@
 package main.server.account;
 
 import main.server.constants.ServerConstants;
-import main.server.utils.ApiException;
+import main.server.utils.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
