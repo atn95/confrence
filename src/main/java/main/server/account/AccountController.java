@@ -20,6 +20,15 @@ public class AccountController {
         return "account controller";
     }
 
+    @GetMapping(value = "/account/{email}")
+    public Account getUser(@PathVariable String email) {
+        try {
+            return accountService.getAccount(email);
+        } catch (Exception e) {
+            throw new ApiException(404, "No Account Found With Email");
+        }
+    }
+
     @PostMapping(value = "/register")
     public Account register(@RequestBody Account newAccount) {
         try {

@@ -19,13 +19,14 @@ public class ChatController {
     }
 
     @PostMapping(value = "/sendchat/{room_id}")
-    public SuccessfulAction sendMessage(@PathVariable int room_id, @RequestBody ChatMessage message) {
+    public SuccessfulAction sendMessage(@PathVariable int room_id, @RequestBody ChatDTO messageDTO) throws Exception {
         try {
             System.out.println("\n\n Sending Message to Room:"+room_id+"\n\n");
-            socketService.sendMessageToRoom(room_id, message);
+            ChatLog saved = chatService.logMessage(messageDTO);
+            socketService.sendMessageToRoom(room_id, saved);
             return new SuccessfulAction(200, "Sent Chat Successfully");
         } catch (Exception e) {
-            throw new ApiException(400, "Something went wrong sending your message");
+            throw e;//new ApiException(400, "Something went wrong sending your message");
         }
     }
 

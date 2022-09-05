@@ -21,4 +21,12 @@ public class AccountService {
             throw e;
         }
     }
+
+    public Account getAccount(String email) {
+        try {
+            return accountRepository.findByEmail(email);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 }

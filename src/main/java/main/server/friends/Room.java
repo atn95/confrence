@@ -1,11 +1,13 @@
 package main.server.friends;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import main.server.chat.ChatLog;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -16,30 +18,30 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "room_sequence")
     private Long id;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "room")
     private Set<ChatLog> log;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "room")
     private Set<UserRelationship> relation;
     @Column(updatable = false)
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private Date updatedAt;
 
-    public Room(Long id, Set<ChatLog> log, Set<UserRelationship> relation, LocalDateTime createdAt, LocalDateTime updatedAt) {
+
+    public Room(Long id, Set<ChatLog> log, Date createdAt, Date updatedAt) {
         this.id = id;
         this.log = log;
-        this.relation = relation;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public Room(Set<ChatLog> log, Set<UserRelationship> relation, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Room(Set<ChatLog> log) {
         this.log = log;
-        this.relation = relation;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public Room() {
@@ -61,19 +63,19 @@ public class Room {
         this.log = log;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -83,5 +85,16 @@ public class Room {
 
     public void setRelation(Set<UserRelationship> relation) {
         this.relation = relation;
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", log=" + log +
+                ", relation=" + relation +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

@@ -1,5 +1,6 @@
 package main.server.socket;
 
+import main.server.chat.ChatLog;
 import main.server.socket.messages.ChatMessage;
 import main.server.socket.messages.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,7 @@ public class WebSocketService {
         this.template = messagingTemplate;
     }
 
-    public void sendMessageToRoom(final int room, ChatMessage message) {
-        ResponseMessage resp = new ResponseMessage(HtmlUtils.htmlEscape(message.getMessageContent()));
-        this.template.convertAndSend("/topic/room/" + room, resp);
+    public void sendMessageToRoom(final int room, ChatLog message) {
+        this.template.convertAndSend("/topic/room/" + room, message);
     }
 }

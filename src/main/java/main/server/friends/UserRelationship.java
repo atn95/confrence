@@ -5,7 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table
@@ -26,12 +26,12 @@ public class UserRelationship {
     private Room room;
     @Column(updatable = false)
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private Date updatedAt;
 
-    public UserRelationship(Long id, Account account, Account friend, Room room, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public UserRelationship(Long id, Account account, Account friend, Room room, Date createdAt, Date updatedAt) {
         this.id = id;
         this.account = account;
         this.friend = friend;
@@ -40,12 +40,10 @@ public class UserRelationship {
         this.updatedAt = updatedAt;
     }
 
-    public UserRelationship(Account account, Account friend, Room room, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public UserRelationship(Account account, Account friend, Room room) {
         this.account = account;
         this.friend = friend;
         this.room = room;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public UserRelationship() {
@@ -83,19 +81,19 @@ public class UserRelationship {
         this.room = room;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

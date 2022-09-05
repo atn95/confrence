@@ -1,12 +1,14 @@
 package main.server.chat;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import main.server.account.Account;
 import main.server.friends.Room;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table
@@ -17,20 +19,21 @@ public class ChatLog {
     private Long id;
     //buddy link id
     @ManyToOne
-    @JoinColumn(name="room")
+    @JoinColumn(name="room_id")
     private Room room;
     @ManyToOne
-    @JoinColumn(name =  "author")
+    @JoinColumn(name =  "author_id")
     private Account author;
     private String content;
     @Column(updatable = false)
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    private Date updatedAt;
 
-    public ChatLog(Long id, Room room, Account author, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+
+    public ChatLog(Long id, Room room, Account author, String content, Date createdAt, Date updatedAt) {
         this.id = id;
         this.room = room;
         this.author = author;
@@ -39,12 +42,10 @@ public class ChatLog {
         this.updatedAt = updatedAt;
     }
 
-    public ChatLog(Room room, Account author, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ChatLog(Room room, Account author, String content) {
         this.room = room;
         this.author = author;
         this.content = content;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public ChatLog() {
@@ -66,6 +67,7 @@ public class ChatLog {
         this.room = room;
     }
 
+
     public Account getAuthor() {
         return author;
     }
@@ -82,19 +84,31 @@ public class ChatLog {
         this.content = content;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "ChatLog{" +
+                "id=" + id +
+                ", room=" + room +
+                ", author=" + author +
+                ", content='" + content + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }
