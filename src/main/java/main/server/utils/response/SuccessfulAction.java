@@ -2,8 +2,6 @@ package main.server.utils.response;
 
 import org.springframework.http.ResponseEntity;
 
-import java.net.http.HttpResponse;
-
 public class SuccessfulAction {
     private final int status;
     private final Object response;
