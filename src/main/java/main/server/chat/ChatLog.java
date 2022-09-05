@@ -1,7 +1,6 @@
 package main.server.chat;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import main.server.account.Account;
 import main.server.friends.Room;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,9 +17,11 @@ public class ChatLog {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chat_log_sequence")
     private Long id;
     //buddy link id
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="room_id")
     private Room room;
+
     @ManyToOne
     @JoinColumn(name =  "author_id")
     private Account author;

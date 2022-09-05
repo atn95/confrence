@@ -1,10 +1,9 @@
 package main.server.friends;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import main.server.chat.ChatLog;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,11 +17,10 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "room_sequence")
     private Long id;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "room")
+
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<ChatLog> log;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "room")
     private Set<UserRelationship> relation;
     @Column(updatable = false)

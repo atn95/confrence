@@ -1,5 +1,6 @@
 package main.server.friends;
 
+import com.fasterxml.jackson.annotation.*;
 import main.server.account.Account;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,6 +10,7 @@ import java.util.Date;
 
 @Entity
 @Table
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class UserRelationship {
     @Id
     @SequenceGenerator(name ="user_relationship_sequence", sequenceName = "user_relationship_sequence", allocationSize = 1)
@@ -16,13 +18,14 @@ public class UserRelationship {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "account")
+    @JoinColumn(name = "account_id")
     private Account account;
+
     @ManyToOne
-    @JoinColumn(name = "friend")
+    @JoinColumn(name = "friend_id")
     private Account friend;
     @ManyToOne
-    @JoinColumn(name ="room")
+    @JoinColumn(name ="room_id")
     private Room room;
     @Column(updatable = false)
     @CreationTimestamp

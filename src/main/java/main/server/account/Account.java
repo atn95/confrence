@@ -1,16 +1,20 @@
 package main.server.account;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import com.sun.istack.NotNull;
+import main.server.friends.UserRelationship;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table
-public class Account {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class Account implements Serializable {
     @Id
     @SequenceGenerator(name = "account_sequence", sequenceName = "account_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_sequence")
@@ -28,9 +32,13 @@ public class Account {
     private String lastName;
     @Column(columnDefinition = "smallint default 0")
     private Short status = 0;
+
+    @OneToMany(mappedBy = "account")
+    private Set<UserRelationship> friends;
     @Column(updatable = false)
     @CreationTimestamp
     private Date createdAt;
+
 
     @UpdateTimestamp
     private Date updatedAt;
@@ -116,6 +124,14 @@ public class Account {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Set<UserRelationship> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(Set<UserRelationship> friends) {
+        this.friends = friends;
     }
 
     @Override
