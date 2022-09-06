@@ -1,13 +1,16 @@
 package main.server.friends;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import main.server.chat.ChatLog;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @Entity
 @Table
@@ -18,10 +21,13 @@ public class Room {
     private Long id;
 
 
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonBackReference
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
-    private Set<ChatLog> log;
+    private Set<ChatLog> messages;
 
-    @OneToMany(mappedBy = "room")
+
+    @OneToMany(mappedBy = "room",fetch = FetchType.LAZY)
     private Set<UserRelationship> relation;
     @Column(updatable = false)
     @CreationTimestamp
@@ -33,13 +39,13 @@ public class Room {
 
     public Room(Long id, Set<ChatLog> log, Date createdAt, Date updatedAt) {
         this.id = id;
-        this.log = log;
+        this.messages = log;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
     public Room(Set<ChatLog> log) {
-        this.log = log;
+        this.messages = log;
     }
 
     public Room() {
@@ -53,12 +59,12 @@ public class Room {
         this.id = id;
     }
 
-    public java.util.Set<ChatLog> getLog() {
-        return log;
+    public Stream<ChatLog> getLog() {
+        return messages.stream().sorted((log1, log2) -> log2.getCreatedAt().compareTo(log1.getCreatedAt())).limit(20);
     }
 
     public void setLog(java.util.Set<ChatLog> log) {
-        this.log = log;
+        this.messages = log;
     }
 
     public Date getCreatedAt() {
@@ -89,7 +95,7 @@ public class Room {
     public String toString() {
         return "Room{" +
                 "id=" + id +
-                ", log=" + log +
+                ", log=" + messages +
                 ", relation=" + relation +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +

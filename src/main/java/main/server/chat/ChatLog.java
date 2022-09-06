@@ -1,6 +1,6 @@
 package main.server.chat;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.*;
 import main.server.account.Account;
 import main.server.friends.Room;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashMap;
 
 @Entity
 @Table
@@ -17,11 +18,13 @@ public class ChatLog {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chat_log_sequence")
     private Long id;
     //buddy link id
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="room_id")
     private Room room;
 
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @ManyToOne
     @JoinColumn(name =  "author_id")
     private Account author;
@@ -69,8 +72,12 @@ public class ChatLog {
     }
 
 
-    public Account getAuthor() {
-        return author;
+    public HashMap<String, Object> getAuthor() {
+        HashMap<String, Object> authorVal = new HashMap<>();
+        authorVal.put("displayName", author.getDisplayName());
+        authorVal.put("id", author.getId());
+
+        return authorVal;
     }
 
     public void setAuthor(Account author) {
@@ -100,6 +107,7 @@ public class ChatLog {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 
     @Override
     public String toString() {

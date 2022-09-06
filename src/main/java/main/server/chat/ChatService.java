@@ -7,6 +7,8 @@ import main.server.friends.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,5 +39,16 @@ public class ChatService {
         ChatLog msg = new ChatLog(room, author, messageDTO.getContent());
         chatRepository.save(msg);
         return msg;
+    }
+
+    public List<ChatLog> getRoomMessages(Long room_id) {
+       List<ChatLog> logs = chatRepository.getLatestMessage(room_id);
+//       List<ChatReturnDTO> returns = new ArrayList<>();
+//       for(ChatLog log: logs) {
+//           returns.add(
+//                   new ChatReturnDTO(log.getId(), (String) log.getAuthor().get("name"), log.getContent(),log.getRoom().getId(), log.getUpdatedAt(),log.getCreatedAt() )
+//           );
+//       }
+       return logs;
     }
 }

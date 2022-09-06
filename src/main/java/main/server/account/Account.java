@@ -7,14 +7,13 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
 @Table
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Account implements Serializable {
+public class Account{
     @Id
     @SequenceGenerator(name = "account_sequence", sequenceName = "account_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_sequence")
@@ -33,6 +32,8 @@ public class Account implements Serializable {
     @Column(columnDefinition = "smallint default 0")
     private Short status = 0;
 
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "account")
     private Set<UserRelationship> friends;
     @Column(updatable = false)

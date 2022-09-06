@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface ChatRepository extends JpaRepository<ChatLog, Long> {
 
-    @Query(value = "SELECT * FROM chat_log WHERE chat_log.room_id =:room_id ORDER DESC LIMIT 20", nativeQuery = true)
+    @Query(value = "SELECT * FROM chat_log WHERE chat_log.room_id =:room_id ORDER BY chat_log.created_at DESC LIMIT 20", nativeQuery = true)
     List<ChatLog> getLatestMessage(@Param("room_id") Long room_id);
+
+
 }

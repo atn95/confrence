@@ -10,7 +10,6 @@ import java.util.Date;
 
 @Entity
 @Table
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class UserRelationship {
     @Id
     @SequenceGenerator(name ="user_relationship_sequence", sequenceName = "user_relationship_sequence", allocationSize = 1)
@@ -18,12 +17,16 @@ public class UserRelationship {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JoinColumn(name = "account_id")
     private Account account;
-
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @ManyToOne
     @JoinColumn(name = "friend_id")
     private Account friend;
+
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @ManyToOne
     @JoinColumn(name ="room_id")
     private Room room;

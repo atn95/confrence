@@ -14,14 +14,20 @@ public class RoomConfig {
         return (args ) -> {
             Account an = new Account("atn95@gmail.com", "asdf1234", "an", "an", "nguyen");
             accountRepository.save(an);
+            Account atn = new Account("atn955@gmail.com", "asdf1234", "an2", "an2", "nguyen");
+            accountRepository.save(atn);
+            Account tran = new Account("JTran@gmail.com", "asdf1234", "an2", "an2", "nguyen");
+            accountRepository.save(tran);
             Room room1 = new Room();
             roomRepository.save(room1);
             Room room2 = new Room();
             roomRepository.save(room2);
             Room room3 = new Room();
             roomRepository.save(room3);
-            UserRelationship friendSelf = new UserRelationship(an,an,room3);
+            UserRelationship friendSelf = new UserRelationship(an,atn,room3);
             userRelationshipRepository.save(friendSelf);
+            UserRelationship tr = new UserRelationship(an,tran, room2);
+            userRelationshipRepository.save(tr);
         };
     }
 }
