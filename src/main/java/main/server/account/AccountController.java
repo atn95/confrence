@@ -11,9 +11,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Transactional
 @RequestMapping(value = ServerConstants.API_ROUTE + "/user")
 public class AccountController {
 
@@ -22,6 +24,7 @@ public class AccountController {
     @Autowired
     private final JwtTokenUtil jwtTokenUtil;
 
+    @Autowired
     public final AccountService accountService;
 
     @Autowired
@@ -55,12 +58,28 @@ public class AccountController {
 
     @PostMapping(value = "/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest info) throws Exception {
-//        authenticate(info.getEmail(), info.getPassword());
+        //authenticate(info.getEmail(), info.getPassword());
         final UserDetails userDetails = accountService.loadUserInfo(info.getEmail());
         final Account user = accountService.getAccount(info.getEmail());
-        final String token = jwtTokenUtil.generateToken(userDetails);
-        LoginResponse resp = new LoginResponse(user, EncryptionUtil.encrypt(token));
-        return ResponseEntity.ok(resp);
+        if(info.getPassword().equals(user.getPassword())) {
+            final String token = jwtTokenUtil.generateToken(userDetails);
+            LoginResponse resp = new LoginResponse(user, EncryptionUtil.encrypt(token));
+            return ResponseEntity.ok(resp);
+        } else{
+            throw new ApiException(401, "Invalid Credentials");
+        }
+    }
+
+    private void authenticate(String username, String password) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            throw new BadCredentialsException("INVALID_CREDENTIALS", e);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
 }
