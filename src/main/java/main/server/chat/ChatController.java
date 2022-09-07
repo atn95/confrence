@@ -2,8 +2,6 @@ package main.server.chat;
 
 import main.server.constants.ServerConstants;
 import main.server.socket.WebSocketService;
-import main.server.socket.messages.ChatMessage;
-import main.server.utils.exception.ApiException;
 import main.server.utils.response.SuccessfulAction;
 import org.springframework.web.bind.annotation.*;
 

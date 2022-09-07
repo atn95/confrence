@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @Transactional
 @RequestMapping(value = ServerConstants.API_ROUTE + "/user")
@@ -49,13 +52,21 @@ public class AccountController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest info) throws Exception {
+    public ResponseEntity<?> login(@RequestBody LoginRequest info, HttpServletResponse res) throws Exception {
         //authenticate(info.getEmail(), info.getPassword());
         final UserDetails userDetails = accountService.loadUserInfo(info.getEmail());
         final Account user = accountService.getAccount(info.getEmail());
         if(info.getPassword().equals(user.getPassword())) {
             final String token = jwtTokenUtil.generateToken(userDetails);
-            LoginResponse resp = new LoginResponse(user, EncryptionUtil.encrypt(token));
+            final String encryptedToken = EncryptionUtil.encrypt(token);
+            //@TODO: more with cookies later for peristence(read from auth)
+            Cookie cookieToken = new Cookie("Authorization", encryptedToken);
+            cookieToken.setSecure(true);
+            cookieToken.setHttpOnly(true);
+            cookieToken.setPath("/");
+            res.addCookie(cookieToken);
+//            res.setHeader("Set-Cookie", "Authorization="+encryptedToken+"; Secure; HttpOnly; SameSite=None; Path=/; Max-Age=99999999;");
+            LoginResponse resp = new LoginResponse(user, encryptedToken);
             return ResponseEntity.ok(resp);
         } else{
             throw new ApiException(401, "Invalid Credentials");
