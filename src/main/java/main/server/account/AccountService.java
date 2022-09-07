@@ -1,7 +1,13 @@
 package main.server.account;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class AccountService {
@@ -28,5 +34,17 @@ public class AccountService {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    public UserDetails loadUserInfo(String email) throws Exception{
+        Account account = accountRepository.findByEmail(email);
+        if(account != null && account.getEmail().equals(email)) {
+            Set<SimpleGrantedAuthority> authorities = new HashSet<>(1);
+            authorities.add(new SimpleGrantedAuthority("user"));
+            return new User(account.getEmail(), account.getPassword(), authorities);
+        } else {
+            throw new Exception("User Not Found");
+        }
+
     }
 }

@@ -38,4 +38,11 @@ public class AccountController {
         }
     }
 
+    @PostMapping(value = "/login")
+    public Account login(@RequestBody LoginRequest info) {
+        System.out.println(info.toString());
+
+        return null;
+    }
+
 }
