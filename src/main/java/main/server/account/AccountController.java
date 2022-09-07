@@ -6,10 +6,6 @@ import main.server.constants.ServerConstants;
 import main.server.utils.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @Transactional
 @RequestMapping(value = ServerConstants.API_ROUTE + "/user")
 public class AccountController {
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
     @Autowired
     private final JwtTokenUtil jwtTokenUtil;
 
@@ -28,9 +21,8 @@ public class AccountController {
     public final AccountService accountService;
 
     @Autowired
-    public AccountController(AccountService accountService, AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil) {
+    public AccountController(AccountService accountService, JwtTokenUtil jwtTokenUtil) {
         this.accountService = accountService;
-        this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
     }
     @GetMapping
@@ -67,18 +59,6 @@ public class AccountController {
             return ResponseEntity.ok(resp);
         } else{
             throw new ApiException(401, "Invalid Credentials");
-        }
-    }
-
-    private void authenticate(String username, String password) throws Exception {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("INVALID_CREDENTIALS", e);
-        } catch (Exception e) {
-            throw e;
         }
     }
 
