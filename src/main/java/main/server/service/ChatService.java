@@ -45,12 +45,6 @@ public class ChatService {
 
     public List<ChatLog> getRoomMessages(Long room_id) {
        List<ChatLog> logs = chatRepository.getLatestMessage(room_id);
-//       List<ChatReturnDTO> returns = new ArrayList<>();
-//       for(ChatLog log: logs) {
-//           returns.add(
-//                   new ChatReturnDTO(log.getId(), (String) log.getAuthor().get("name"), log.getContent(),log.getRoom().getId(), log.getUpdatedAt(),log.getCreatedAt() )
-//           );
-//       }
        return logs;
     }
 }

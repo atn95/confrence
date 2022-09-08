@@ -20,7 +20,7 @@ public class ChatController {
     }
 
     @PostMapping(value = "/sendchat/{room_id}")
-    public SuccessfulResponse sendMessage(@PathVariable int room_id, @RequestBody ChatDTO messageDTO) throws Exception {
+    public SuccessfulResponse sendMessage(@PathVariable Long room_id, @RequestBody ChatDTO messageDTO) throws Exception {
         try {
             System.out.println("\n\n Sending Message to Room:"+room_id+"\n\n");
             ChatLog saved = chatService.logMessage(messageDTO);
@@ -30,5 +30,7 @@ public class ChatController {
             throw e;//new ApiException(400, "Something went wrong sending your message");
         }
     }
+
+
 
 }
