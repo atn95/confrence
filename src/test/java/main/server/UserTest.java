@@ -1,7 +1,7 @@
 package main.server;
 
-import main.server.account.Account;
-import main.server.account.AccountRepository;
+import main.server.model.Account;
+import main.server.repository.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

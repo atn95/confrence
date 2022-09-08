@@ -1,11 +1,11 @@
 package main.server;
 
-import main.server.account.Account;
-import main.server.account.AccountRepository;
-import main.server.friends.Room;
-import main.server.friends.RoomRepository;
-import main.server.friends.UserRelationship;
-import main.server.friends.UserRelationshipRepository;
+import main.server.model.Account;
+import main.server.repository.AccountRepository;
+import main.server.model.Room;
+import main.server.repository.RoomRepository;
+import main.server.model.UserRelationship;
+import main.server.repository.UserRelationshipRepository;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -67,7 +67,7 @@ public class ServerApplication {
 			accountRepository.save(an);
 			Account atn = new Account("atn955@gmail.com", "asdf1234", "an2", "an2", "nguyen");
 			accountRepository.save(atn);
-			Account tran = new Account("JTran@gmail.com", "asdf1234", "an2", "an2", "nguyen");
+			Account tran = new Account("JTran@gmail.com", "asdf1234", "an3", "an2", "nguyen");
 			accountRepository.save(tran);
 			Room room1 = new Room();
 			roomRepository.save(room1);
@@ -79,6 +79,10 @@ public class ServerApplication {
 			userRelationshipRepository.save(friendSelf);
 			UserRelationship tr = new UserRelationship(an,tran, room2);
 			userRelationshipRepository.save(tr);
+			UserRelationship friendSelfreverse = new UserRelationship(atn,an,room3);
+			userRelationshipRepository.save(friendSelfreverse);
+			UserRelationship tranreverse = new UserRelationship(tran,an,room2);
+			userRelationshipRepository.save(tranreverse);
 		};
 	}
 
