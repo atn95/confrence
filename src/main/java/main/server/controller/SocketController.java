@@ -1,5 +1,6 @@
 package main.server.controller;
 
+import main.server.model.CallAnswer;
 import main.server.model.CallRequest;
 import main.server.service.WebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 public class SocketController {
@@ -21,6 +21,13 @@ public class SocketController {
     public ResponseEntity call(@DestinationVariable("room_id") String room, CallRequest callRequest) {
         System.out.println("\n\n" + callRequest + "\n\n");
         webSocketService.sendCallRequest(Long.valueOf(room), callRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @MessageMapping("/answer/{room_id}")
+    public ResponseEntity answer(@DestinationVariable("room_id") String room, CallAnswer answer) {
+        System.out.println("\n\n" + answer + "\n\n");
+        webSocketService.sendAnswer(Long.valueOf(room), answer);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

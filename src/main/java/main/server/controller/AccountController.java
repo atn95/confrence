@@ -2,7 +2,7 @@ package main.server.controller;
 
 import main.server.utils.security.EncryptionUtil;
 import main.server.utils.security.JwtTokenUtil;
-import main.server.model.Account;
+import main.server.model.entity.Account;
 import main.server.service.AccountService;
 import main.server.model.LoginRequest;
 import main.server.model.LoginResponse;

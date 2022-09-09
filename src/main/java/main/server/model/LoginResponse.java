@@ -1,5 +1,7 @@
 package main.server.model;
 
+import main.server.model.entity.Account;
+
 public class LoginResponse {
     private final String token;
     private final Account user;

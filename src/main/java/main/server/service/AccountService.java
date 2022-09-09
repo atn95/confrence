@@ -1,6 +1,6 @@
 package main.server.service;
 
-import main.server.model.Account;
+import main.server.model.entity.Account;
 import main.server.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

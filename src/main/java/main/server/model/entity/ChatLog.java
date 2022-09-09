@@ -1,4 +1,4 @@
-package main.server.model;
+package main.server.model.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.CreationTimestamp;

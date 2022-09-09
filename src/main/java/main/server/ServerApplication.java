@@ -1,10 +1,10 @@
 package main.server;
 
-import main.server.model.Account;
+import main.server.model.entity.Account;
 import main.server.repository.AccountRepository;
-import main.server.model.Room;
+import main.server.model.entity.Room;
 import main.server.repository.RoomRepository;
-import main.server.model.UserRelationship;
+import main.server.model.entity.UserRelationship;
 import main.server.repository.UserRelationshipRepository;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;

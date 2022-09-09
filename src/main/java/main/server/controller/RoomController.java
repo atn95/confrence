@@ -1,6 +1,6 @@
 package main.server.controller;
 
-import main.server.model.ChatLog;
+import main.server.model.entity.ChatLog;
 import main.server.service.ChatService;
 import main.server.constants.ServerConstants;
 import main.server.utils.exception.ApiException;

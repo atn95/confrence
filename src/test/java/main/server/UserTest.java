@@ -1,6 +1,6 @@
 package main.server;
 
-import main.server.model.Account;
+import main.server.model.entity.Account;
 import main.server.repository.AccountRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

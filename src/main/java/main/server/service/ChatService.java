@@ -1,11 +1,11 @@
 package main.server.service;
 
-import main.server.model.Account;
+import main.server.model.entity.Account;
 import main.server.repository.AccountRepository;
 import main.server.model.ChatDTO;
-import main.server.model.ChatLog;
+import main.server.model.entity.ChatLog;
 import main.server.repository.ChatRepository;
-import main.server.model.Room;
+import main.server.model.entity.Room;
 import main.server.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

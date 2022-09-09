@@ -1,6 +1,6 @@
 package main.server.repository;
 
-import main.server.model.ChatLog;
+import main.server.model.entity.ChatLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

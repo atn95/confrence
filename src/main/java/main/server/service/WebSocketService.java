@@ -1,7 +1,8 @@
 package main.server.service;
 
+import main.server.model.CallAnswer;
 import main.server.model.CallRequest;
-import main.server.model.ChatLog;
+import main.server.model.entity.ChatLog;
 import main.server.model.SocketData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -22,5 +23,9 @@ public class WebSocketService {
 
     public void sendCallRequest(final Long room, CallRequest callOffer) {
         this.template.convertAndSend("/topic/room/" + room, new SocketData("call-offer",callOffer));
+    }
+
+    public void sendAnswer(final Long room, CallAnswer answer) {
+        this.template.convertAndSend("/topic/room/" + room, new SocketData("call-answer",answer));
     }
 }
