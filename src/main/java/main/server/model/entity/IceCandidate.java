@@ -1,14 +1,13 @@
-package main.server.model;
+package main.server.model.entity;
 
-public class CallAnswer {
-
+public class IceCandidate {
     private String type;
-    private String sdp;
+    private String candidate;
     private String from;
 
-    public CallAnswer(String type, String sdp, String from) {
+    public IceCandidate(String type, String candidate, String from) {
         this.type = type;
-        this.sdp = sdp;
+        this.candidate = candidate;
         this.from = from;
     }
 
@@ -20,12 +19,12 @@ public class CallAnswer {
         this.type = type;
     }
 
-    public String getSdp() {
-        return sdp;
+    public String getCandidate() {
+        return candidate;
     }
 
-    public void setSdp(String sdp) {
-        this.sdp = sdp;
+    public void setCandidate(String candidate) {
+        this.candidate = candidate;
     }
 
     public String getFrom() {
@@ -38,9 +37,9 @@ public class CallAnswer {
 
     @Override
     public String toString() {
-        return "CallAnswer{" +
+        return "IceCandidate{" +
                 "type='" + type + '\'' +
-                ", sdp='" + sdp + '\'' +
+                ", candidate='" + candidate + '\'' +
                 ", from='" + from + '\'' +
                 '}';
     }

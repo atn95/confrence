@@ -2,6 +2,7 @@ package main.server.controller;
 
 import main.server.model.CallAnswer;
 import main.server.model.CallRequest;
+import main.server.model.entity.IceCandidate;
 import main.server.service.WebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,13 @@ public class SocketController {
     public ResponseEntity answer(@DestinationVariable("room_id") String room, CallAnswer answer) {
         System.out.println("\n\n" + answer + "\n\n");
         webSocketService.sendAnswer(Long.valueOf(room), answer);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @MessageMapping("/candidate/{room_id}")
+    public ResponseEntity candidate(@DestinationVariable("room_id") String room, IceCandidate candidate) {
+        System.out.println("\n\n" + candidate + "\n\n");
+        webSocketService.sendIceCandidate(Long.valueOf(room), candidate);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

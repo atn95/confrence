@@ -4,6 +4,7 @@ import main.server.model.CallAnswer;
 import main.server.model.CallRequest;
 import main.server.model.entity.ChatLog;
 import main.server.model.SocketData;
+import main.server.model.entity.IceCandidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -28,4 +29,9 @@ public class WebSocketService {
     public void sendAnswer(final Long room, CallAnswer answer) {
         this.template.convertAndSend("/topic/room/" + room, new SocketData("call-answer",answer));
     }
+
+    public void sendIceCandidate(final Long room, IceCandidate candidate) {
+        this.template.convertAndSend("/topic/room/" + room, new SocketData("ice-candidate", candidate));
+    }
+
 }
