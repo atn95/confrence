@@ -19,19 +19,19 @@ public class WebSocketService {
     }
 
     public void sendMessageToRoom(final Long room, ChatLog message) {
-        this.template.convertAndSend("/topic/room/" + room, new SocketData("chat-message", message));
+        this.template.convertAndSend("/topic/room/" + room, new SocketData("chat-message", message, room));
     }
 
     public void sendCallRequest(final Long room, CallRequest callOffer) {
-        this.template.convertAndSend("/topic/room/" + room, new SocketData("call-offer",callOffer));
+        this.template.convertAndSend("/topic/call/" + room, new SocketData("call-offer",callOffer, room));
     }
 
     public void sendAnswer(final Long room, CallAnswer answer) {
-        this.template.convertAndSend("/topic/room/" + room, new SocketData("call-answer",answer));
+        this.template.convertAndSend("/topic/call/" + room, new SocketData("call-answer",answer, room));
     }
 
     public void sendIceCandidate(final Long room, IceCandidate candidate) {
-        this.template.convertAndSend("/topic/room/" + room, new SocketData("ice-candidate", candidate));
+        this.template.convertAndSend("/topic/call/" + room, new SocketData("ice-candidate", candidate, room));
     }
 
 }
