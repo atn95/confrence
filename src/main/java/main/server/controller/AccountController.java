@@ -1,5 +1,8 @@
 package main.server.controller;
 
+import main.server.model.entity.FriendRequest;
+import main.server.service.FriendRequestService;
+import main.server.service.WebSocketService;
 import main.server.utils.security.EncryptionUtil;
 import main.server.utils.security.JwtTokenUtil;
 import main.server.model.entity.Account;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 @RestController
 @Transactional
@@ -25,12 +29,20 @@ public class AccountController {
     private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    public final AccountService accountService;
+    private final AccountService accountService;
 
     @Autowired
-    public AccountController(AccountService accountService, JwtTokenUtil jwtTokenUtil) {
+    private final FriendRequestService friendRequestService;
+
+    @Autowired
+    private final WebSocketService webSocketService;
+
+    @Autowired
+    public AccountController(AccountService accountService, JwtTokenUtil jwtTokenUtil, FriendRequestService friendRequestService, WebSocketService webSocketService) {
         this.accountService = accountService;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.friendRequestService = friendRequestService;
+        this.webSocketService = webSocketService;
     }
     @GetMapping
     public String getRoute() {
@@ -49,6 +61,7 @@ public class AccountController {
     @PostMapping(value = "/register")
     public Account register(@RequestBody Account newAccount) {
         try {
+            System.out.println(newAccount);
            return accountService.registerAccount(newAccount);
         } catch (Exception e) {
             throw new ApiException(400, "Error Registering Account");
@@ -74,6 +87,19 @@ public class AccountController {
             return ResponseEntity.ok(resp);
         } else{
             throw new ApiException(401, "Invalid Credentials");
+        }
+    }
+
+    @PostMapping(value = "/friendrequest")
+    public ResponseEntity<?> addFriend(@RequestBody HashMap<String, Long> request) {
+        try {
+            Account requester = accountService.getAccountByPK(request.get("requester_id"));
+            Account receiver = accountService.getAccountByPK(request.get("receiver_id"));
+            FriendRequest req = friendRequestService.newFriendRequest(requester, receiver);
+            System.out.println(req);
+            return ResponseEntity.ok(request);
+        }catch(Exception e) {
+            throw new ApiException(400, "Bad Request");
         }
     }
 

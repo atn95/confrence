@@ -38,6 +38,14 @@ public class AccountService {
         }
     }
 
+    public Account getAccountByPK(Long id) {
+        try{
+            return accountRepository.findById(id).get();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
     public UserDetails loadUserInfo(String email) throws Exception{
         Account account = accountRepository.findByEmail(email);
         if(account != null && account.getEmail().equals(email)) {
