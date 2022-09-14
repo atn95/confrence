@@ -79,7 +79,6 @@ public class FriendRequest {
         this.updatedAt = updatedAt;
     }
 
-
     @Override
     public String toString() {
         return "FriendRequest{" +

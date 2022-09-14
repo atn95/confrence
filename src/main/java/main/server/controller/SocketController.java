@@ -38,4 +38,9 @@ public class SocketController {
         webSocketService.sendIceCandidate(Long.valueOf(room), candidate);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @MessageMapping("/reject/{room_id}")
+    public ResponseEntity reject(@DestinationVariable("room_id") String room) {
+        webSocketService.sendRejectCall(Long.valueOf(room));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

@@ -1,5 +1,6 @@
 package main.server.controller;
 
+import main.server.model.*;
 import main.server.model.entity.FriendRequest;
 import main.server.service.FriendRequestService;
 import main.server.service.WebSocketService;
@@ -7,12 +8,11 @@ import main.server.utils.security.EncryptionUtil;
 import main.server.utils.security.JwtTokenUtil;
 import main.server.model.entity.Account;
 import main.server.service.AccountService;
-import main.server.model.LoginRequest;
-import main.server.model.LoginResponse;
 import main.server.constants.ServerConstants;
 import main.server.utils.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @Transactional
@@ -44,6 +47,7 @@ public class AccountController {
         this.friendRequestService = friendRequestService;
         this.webSocketService = webSocketService;
     }
+
     @GetMapping
     public String getRoute() {
         return "account controller";
@@ -62,7 +66,7 @@ public class AccountController {
     public Account register(@RequestBody Account newAccount) {
         try {
             System.out.println(newAccount);
-           return accountService.registerAccount(newAccount);
+            return accountService.registerAccount(newAccount);
         } catch (Exception e) {
             throw new ApiException(400, "Error Registering Account");
         }
@@ -73,7 +77,7 @@ public class AccountController {
         //authenticate(info.getEmail(), info.getPassword());
         final UserDetails userDetails = accountService.loadUserInfo(info.getEmail());
         final Account user = accountService.getAccount(info.getEmail());
-        if(info.getPassword().equals(user.getPassword())) {
+        if (info.getPassword().equals(user.getPassword())) {
             final String token = jwtTokenUtil.generateToken(userDetails);
             final String encryptedToken = EncryptionUtil.encrypt(token);
             //@TODO: more with cookies later for peristence(read from auth)
@@ -85,7 +89,7 @@ public class AccountController {
 //            res.setHeader("Set-Cookie", "Authorization="+encryptedToken+"; Secure; HttpOnly; SameSite=None; Path=/; Max-Age=99999999;");
             LoginResponse resp = new LoginResponse(user, encryptedToken);
             return ResponseEntity.ok(resp);
-        } else{
+        } else {
             throw new ApiException(401, "Invalid Credentials");
         }
     }
@@ -98,8 +102,65 @@ public class AccountController {
             FriendRequest req = friendRequestService.newFriendRequest(requester, receiver);
             System.out.println(req);
             return ResponseEntity.ok(request);
-        }catch(Exception e) {
+        } catch (Exception e) {
             throw new ApiException(400, "Bad Request");
+        }
+    }
+
+    @PostMapping(value = "/search")
+    public List<SearchResponseAccountDTO> search(@RequestBody SearchRequest search) {
+        try {
+            String[] query = search.getQuery();
+            System.out.println(search);
+            List<SearchResponseAccountDTO> results = accountService.searchByEmail(query, search.getRequester());
+            return results;
+        } catch (Exception e) {
+            throw new ApiException(400, "Something went Wrong");
+        }
+    }
+
+    @GetMapping(value = "/pending/{id}")
+    public List<SearchResponseAccountDTO> getPending(@PathVariable Long id) {
+        try{
+            HashMap<Long, SearchResponseAccountDTO> accounts = new HashMap<>();
+            List<FriendRequest> requests = friendRequestService.pendingRequestByUserId(id);
+            requests.forEach((req) -> {
+                Account rec = accountService.getAccountByPK(req.getReceiver());
+                SearchResponseAccountDTO dto = new SearchResponseAccountDTO(
+                        rec.getId(),
+                        rec.getEmail(),
+                        rec.getDisplayName(),
+                        rec.getFirstName(), rec.getLastName(),
+                        rec.getStatus(),
+                        rec.getCreatedAt(),
+                        rec.getUpdatedAt(),
+                        true);
+                accounts.put(req.getId(), dto);
+            });
+            return accounts.values().stream().toList();
+        } catch (Exception e) {
+            throw new ApiException(400, "Something went retrieving pending req");
+        }
+    }
+
+    @GetMapping(value = "/reject/{id}")
+    public ResponseEntity rejectRequest(@PathVariable Long id) {
+        try {
+            friendRequestService.reject(id);
+            return ResponseEntity.ok("OK");
+        } catch (Exception e) {
+            throw new ApiException(401, e.getMessage());
+        }
+    }
+
+    @GetMapping(value = "/accept/{id}")
+    public ResponseEntity accept(@PathVariable Long id) {
+        try {
+            friendRequestService.reject(id);//its really deleting the request
+            friendRequestService.acceptFriendRequest(id);
+            return ResponseEntity.ok("OK");
+        } catch (Exception e) {
+            throw new ApiException(401, e.getMessage());
         }
     }
 

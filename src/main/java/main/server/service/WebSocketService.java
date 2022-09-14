@@ -34,4 +34,8 @@ public class WebSocketService {
         this.template.convertAndSend("/topic/call/" + room, new SocketData("ice-candidate", candidate, room));
     }
 
+    public void sendRejectCall(final Long room) {
+        this.template.convertAndSend("/topic/call/" + room, new SocketData("reject", null, room));
+    }
+
 }

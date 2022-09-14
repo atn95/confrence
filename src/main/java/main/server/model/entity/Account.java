@@ -72,6 +72,10 @@ public class Account{
         this.id = id;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
     public String getEmail() {
         return email;
     }
